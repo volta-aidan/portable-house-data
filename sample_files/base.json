@@ -6,16 +6,7 @@
         "totalConditionedFloorArea": 185.8
     },
     "buildingSite": {
-        "postalCode": "M5T 1G4",
-
-        "address": "317 Dundas St W",
-
-        "city": "Toronto",
-        "region": "ON",
-        "country": "Canada",
-
-        "latitude": 43.6511235,
-        "longitude": -79.3892936
+        "postalCode": "M1A"
     },
     "enclosure": {
         "foundation": {
@@ -35,11 +26,7 @@
         "primaryHotWater": {
             "fuelType": "natural gas"
         },
-        "heatPump": {
-            "equipmentType": "air-to-air"
-        },
         "ventilation": {
-            "bathroomFanCount": 2,
             "ventilatorType": "erv"
         }
     }

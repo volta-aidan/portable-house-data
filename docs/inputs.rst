@@ -5,13 +5,20 @@ The portable house data input file (json format) is designed to be flexible, all
 Where parameters are not required, recommended defaults are provided. 
 However, it falls on the individual software provider or data interpreter to handle defaults within their own systems appropriately.
 
-The file format contains two levels of nesting: *Category* and *Object Class*. *Categories* include: Building Information, Building Site, Enclosure, Systems, and Occupant Characteristics
+The file format contains two levels of nesting: *Category* and *Object Class*. *Categories* include: Building Information, Building Site, Enclosure, Systems, and Occupant Characteristics.
+
+The **Required** field in the table below indicates whether a parameter is required in the context of that object class, but not all Object Classes are required. 
+For example, if the ``foundation`` object class is included, the ``foundationType`` variable is also required. 
+Object classes that are required indicate so in their section headers below.
+
 
 Building Information
 --------------------
 
-Building Specifications
-***********************
+Building Specifications (REQUIRED)
+**********************************
+
+The Building Specifications section is always required, meaning that the ``yearBuilt`` and ``totalConditionedFloorArea`` of the home are always required parameters
 
   ==================================  ========  =======  ===========  ========  ===========  ============================================================
   Variable Name                       Type      Units    Constraints  Required  Default      Notes
@@ -23,6 +30,7 @@ Building Specifications
   ``numConditionedFloors``            integer            > 0, <=4     No        1            Total number of storeys, including basement if applicable
   ``numConditionedFloorsAboveGrade``  integer            >= 0, <=3    No        1            Total number of above grade storeys
   ``layoutType``                      string             See [#]_     No        standard     Layout of storeys, used to indicate presence of split levels
+  ``totalConditionedFloorArea``       double    m2       >0, <=600    Yes                    Total conditioned floor area of the building
   ==================================  ========  =======  ===========  ========  ===========  ============================================================
 
   .. [#] ``layoutType`` choices are "standard" and "split".
@@ -34,23 +42,23 @@ Building Specifications
 
 Building Site
 -------------
-Location
+Location (REQUIRED)
 ***********************
 
 Location information can be entered in four different ways depending on the level of detail provided.
-These sections can be used in combination with eachother.
+These sections can be used in combination with eachother, but at least one of the following sets of data is required.
 
 Address
 ~~~~~~~
   
-  ==================================  ========  =======  ===========  ========  ===========  ============================================================
+  ==================================  ========  =======  ===========  ========  ===========  =============================================================
   Variable Name                       Type      Units    Constraints  Required  Default      Notes
-  ==================================  ========  =======  ===========  ========  ===========  ============================================================
-  ``address``                         string                          No                     Combination of the below three option (e.g. 123 Fake Street)
+  ==================================  ========  =======  ===========  ========  ===========  =============================================================
+  ``address``                         string                          No                     Combination of the below three options (e.g. 123 Fake Street)
   ``addressCivicNumber``              string                          No                     Address number (e.g. 123, 2A)
   ``addressStreetName``               string                          No                     Address street name (e.g. Fake Street)
   ``addressUnitNumber``               string                          No                     Unit number, if applicable
-  ==================================  ========  =======  ===========  ========  ===========  ============================================================
+  ==================================  ========  =======  ===========  ========  ===========  =============================================================
 
 Postal Code
 ~~~~~~~~~~~
@@ -73,7 +81,7 @@ Region
   ``country``                         string                            No        CANADA       Country
   ==================================  ========  =======  =============  ========  ===========  ============================================================
 
-  .. [#] ``region`` should use two-letter province/territory/state abreviation ("ON", "QC", "YT", etc.)
+  .. [#] ``region`` should use two-letter province/territory/state abbreviation ("ON", "QC", "YT", etc.)
 
 Latitude & Longitude
 ~~~~~~~~~~~~~~~~~~~~
@@ -89,7 +97,35 @@ Latitude & Longitude
 Enclosure
 ---------
 
+Air Infiltration
+***********************
 
+  ==================================  ========  =======  =============  ========  ===========  ============================================================
+  Variable Name                       Type      Units    Constraints    Required  Default      Notes
+  ==================================  ========  =======  =============  ========  ===========  ============================================================
+  ``airLeakageRate``                  double    ACH50                   No        See [#]_     Air leakage of dwelling
+  ==================================  ========  =======  =============  ========  ===========  ============================================================
+
+  .. [#] ``airLeakageRate`` defaults are not provided, assuming interpreters have a means of assuming defaults where measured values are not provided (e.g. ERS Technical Procedures Appendix D).
+
+
+
+Foundation
+***********************
+
+  ==================================  ========  =======  =============  ========  ===========  ============================================================
+  Variable Name                       Type      Units    Constraints    Required  Default      Notes
+  ==================================  ========  =======  =============  ========  ===========  ============================================================
+  ``foundationType``                  string             See [#]_       Yes                    Type of foundation 
+  ``foundationPerimeter``             double    m                       No                     Foundation perimeter
+  ``foundationFloorArea``             double    m2                      No                     Foundation floor area                     
+  ``foundationWallHeight``            double    m                       No                     Foundation total wall height (slab to ceiling)     
+  ``foundationWallDepth``             double    m                       No                     Foundation wall depth (slab to grade)    
+  ``foundationWallInsulation``        double    RSI                     No                     Foundation wall effective insulation value 
+  ``foundationSlabInsulation``        double    RSI                     No                     Foundation slab effective insulation value
+  ==================================  ========  =======  =============  ========  ===========  ============================================================
+
+  .. [#] ``foundationType`` choices are "basement", "crawlspace", "slab-on-grade", "walkout", and "piers"
 
 
 Systems
